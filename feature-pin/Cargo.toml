@@ -1,0 +1,16 @@
+[package]
+name = "feature-pin"
+version = "0.0.0"
+edition = "2021"
+publish = false
+license = "Apache-2.0"
+description = "Build-only: reproduces the dependency feature set the pinned ampoule-verify was built with. No code."
+
+# ampoule-verify was first built inside a larger workspace, where cargo
+# unified these crates' features with those of sibling packages. Building
+# this empty crate alongside attest restores exactly that feature set, so the
+# binary is byte-identical to the pin. It adds no crate to ampoule-verify.
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+libc = "0.2"
+memchr = "2"

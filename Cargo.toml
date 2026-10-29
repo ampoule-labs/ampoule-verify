@@ -1,0 +1,9 @@
+[workspace]
+resolver = "2"
+members = ["attest", "feature-pin"]
+
+[profile.release]
+opt-level = "s"
+lto = true
+codegen-units = 1
+debug = true
