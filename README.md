@@ -20,9 +20,28 @@ Run `ampoule-verify --help` for usage and exit codes (0 VERIFIED, 1 FAILED,
 - Signatures are only checked against keys you pass with `--key`; keys found
   inside a receipt are never trusted.
 
+## Quickstart: verify the demo receipt
+
+    git clone https://github.com/ampoule-labs/ampoule-verify && cd ampoule-verify
+    cargo build --release -p attest
+    target/release/ampoule-verify examples/receipt.json \
+      --key examples/demo-only.pub \
+      --payload examples/refund.rhai --output examples/output.txt \
+      --expected-kernel-sha256 60ba914966395b267798704d26a7967dce69b902f10920625e403a856f6d1bf7
+
+It ends with `result     VERIFIED` and exit code 0. [`examples/`](examples/README.md)
+also has tampered copies that each end with `FAILED` and exit code 1. The demo
+key is for this example only; never trust it for anything real.
+
+Needs rustup; the pinned toolchain comes from `rust-toolchain.toml` (some
+rustup versions need `rustup toolchain install 1.99.0` first).
+
 ## Build
 
     cargo build --release -p attest      # ordinary build, any platform
+
+An ordinary build works anywhere but does not give the pinned hash below;
+only `./scripts/build.sh` on the pinned image (Debian 13) does.
 
 ## Reproduce the pinned hash
 
@@ -35,7 +54,7 @@ gcc 14.2.0, binutils 2.44, x86_64) and rustc 1.99.0 (pinned by
 `rust-toolchain.toml`; rustup installs it). The binary links dynamically to
 glibc and libgcc_s, so another distro or release gives a different hash.
 
-    git clone <this repo> ampoule-verify && cd ampoule-verify
+    git clone https://github.com/ampoule-labs/ampoule-verify && cd ampoule-verify
     ./scripts/build.sh
 
 It builds from scratch in a temporary target dir with `--locked`, the release
